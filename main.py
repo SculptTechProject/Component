@@ -1,27 +1,19 @@
-import pymysql
-import os
+import asyncio
+from db import db, connect_db, disconnect_db
 
-password_db = os.getenv("db_password")
 
-timeout = 10
-connection = pymysql.connect(
-    charset="utf8mb4",
-    connect_timeout=timeout,
-    cursorclass=pymysql.cursors.DictCursor,
-    db="defaultdb",
-    host="pcomponent-db-pcomponent-db.d.aivencloud.com",
-    password=f"{password_db}",
-    read_timeout=timeout,
-    port=12836,
-    user="avnadmin",
-    write_timeout=timeout,
-)
+async def main():
+    await connect_db()  # Połączenie z bazą
 
-try:
-    cursor = connection.cursor()
-    cursor.execute("CREATE TABLE mytest (id INTEGER PRIMARY KEY)")
-    cursor.execute("INSERT INTO mytest (id) VALUES (1), (2)")
-    cursor.execute("SELECT * FROM mytest")
-    print(cursor.fetchall())
-finally:
-    connection.close()
+    # Tworzenie tabeli (automatycznie przy migracji)
+    await db.test.create(data={"name": "Example"})
+
+    # Pobranie wszystkich rekordów
+    records = await db.test.find_many()
+    print(records)
+
+    await disconnect_db()  # Zamknięcie połączenia
+
+
+# Uruchomienie event loopa
+asyncio.run(main())
