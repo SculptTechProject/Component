@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-py"
 }
 
 datasource db {
@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Processor{
-  id String @unique
+  id Int @id @default(autoincrement())
   producer String
   name String @unique
   socket String
@@ -24,6 +24,5 @@ model Processor{
   cores Int
   threads Int
   Unlocked_multiplier Boolean @default(false)
-
 }
 
