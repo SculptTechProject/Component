@@ -1,7 +1,7 @@
 from prisma import Prisma
 
 # Inicjalizacja klienta Prisma
-db = Prisma(auto_register=True)
+db = Prisma()
 
 async def connect_db():
     await db.connect()

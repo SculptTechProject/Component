@@ -24,5 +24,6 @@ model Processor{
   cores Int
   threads Int
   Unlocked_multiplier Boolean @default(false)
+  market String
 }
 
